@@ -1,12 +1,24 @@
 from django.contrib import admin
 from django.urls import path, include
-from recetas.views import home
+from django.contrib.auth import views as auth_views
+from recetas.views import home, dashboard_fbv, DashboardCBV
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home, name='home'),          
+    
+    # Rutas públicas
+    path('', home, name='home'),
+    
+    # Rutas de autenticación
+    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    
+    # Rutas privadas protegidas
+    path('dashboard/fbv/', dashboard_fbv, name='dashboard_fbv'),
+    path('dashboard/cbv/', DashboardCBV.as_view(), name='dashboard_cbv'),
+    
+    # API REST
     path('api/', include('recetas.urls')),
 ]
 
-# Controlador personalizado para el error 404
 handler404 = 'recetas.views.pagina_404'

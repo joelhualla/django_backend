@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Vista Protegida CBV</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #fafafa; }
+        .nav { background: #1e3a8a; padding: 12px 20px; border-radius: 5px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; }
+        .nav a, .nav span { color: white; text-decoration: none; margin-right: 15px; font-weight: bold; }
+        .btn-logout { background: #d32f2f; border: none; color: white; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .content { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .badge { background: #dcfce7; color: #15803d; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        ul { line-height: 1.8; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <div>
+            <span>Usuario activo: {{ user.username }}</span>
+            <a href="/dashboard/fbv/">Vista FBV (Función)</a>
+            <a href="/dashboard/cbv/">Vista CBV (Clase)</a>
+            <a href="/api/">API REST</a>
+        </div>
+        <form method="post" action="{% url 'logout' %}" style="margin: 0;">
+            {% csrf_token %}
+            <button class="btn-logout" type="submit">Cerrar Sesión</button>
+        </form>
+    </div>
+
+    <div class="content">
+        <h2>Panel Privado: Vista Basada en Clase (CBV)</h2>
+        <p><span class="badge">Protegida con LoginRequiredMixin</span></p>
+        <p>Esta vista demuestra el control de acceso implementado sobre una vista basada en clase de tipo <code>ListView</code>.</p>
+        
+        <h3>Categorías Registradas en el Sistema</h3>
+        <ul>
+            {% for cat in categorias %}
+                <li><strong>{{ cat.nombre }}</strong>: {{ cat.descripcion|default:"Sin descripción" }}</li>
+            {% empty %}
+                <li>No hay categorías registradas.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

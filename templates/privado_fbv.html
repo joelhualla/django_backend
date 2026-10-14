@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Vista Protegida FBV</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #fafafa; }
+        .nav { background: #333; padding: 12px 20px; border-radius: 5px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; }
+        .nav a, .nav span { color: white; text-decoration: none; margin-right: 15px; font-weight: bold; }
+        .btn-logout { background: #d32f2f; border: none; color: white; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .content { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .badge { background: #e0f2fe; color: #0369a1; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #f4f4f4; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <div>
+            <span>Usuario activo: {{ user.username }}</span>
+            <a href="/dashboard/fbv/">Vista FBV (Función)</a>
+            <a href="/dashboard/cbv/">Vista CBV (Clase)</a>
+            <a href="/api/">API REST</a>
+        </div>
+        <form method="post" action="{% url 'logout' %}" style="margin: 0;">
+            {% csrf_token %}
+            <button class="btn-logout" type="submit">Cerrar Sesión</button>
+        </form>
+    </div>
+
+    <div class="content">
+        <h2>Panel Privado: Vista Basada en Función (FBV)</h2>
+        <p><span class="badge">Protegida con @login_required</span></p>
+        <p>Esta vista demuestra el acceso restringido a usuarios autenticados mediante funciones convencionales de Django.</p>
+        
+        <h3>Listado de Recetas Disponibles (Total: {{ recetas|length }})</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Categoría</th>
+                    <th>Dificultad</th>
+                    <th>Tiempo (min)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in recetas %}
+                <tr>
+                    <td>{{ r.id }}</td>
+                    <td>{{ r.titulo }}</td>
+                    <td>{{ r.categoria.nombre }}</td>
+                    <td>{{ r.dificultad }}</td>
+                    <td>{{ r.tiempo_preparacion_min }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5">No hay recetas registradas.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

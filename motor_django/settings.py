@@ -133,3 +133,8 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+# Configuración de Autenticación y Control de Acceso (Evaluación 3)
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'dashboard_fbv'
+LOGOUT_REDIRECT_URL = 'login'
